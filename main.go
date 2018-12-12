@@ -16,13 +16,17 @@ func main() {
     fmt.Printf("sensor IDs: %v\n", sensors)
 
     for true {
-        timex := time.Now()
+        timeStamp := makeTimestamp()
     	for _, sensor := range sensors {
             t, err := ds18b20.Temperature(sensor)
             if err == nil {
-            	fmt.Printf("At %s sensor: %s temperature: %.2f°C\n",timex, sensor, t)
+            	fmt.Printf("%d,%s,%.2f\n",timeStamp, sensor, t)
             }
     	}
         time.Sleep(30 * time.Second)
     }
+}
+
+func makeTimestamp() int64 {
+    return time.Now().UnixNano() / int64(time.Millisecond)
 }
